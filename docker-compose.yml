@@ -1,0 +1,4 @@
+predict-backend:
+  image: kerwinjorbina/predict-backend
+  ports:
+    - "8090:8080"
