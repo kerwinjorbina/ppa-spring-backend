@@ -1,5 +1,3 @@
-RUN adduser -D kerwin
-USER kerwin
 FROM frolvlad/alpine-oraclejdk8:slim
 VOLUME /tmp
 ADD target/predictive-backend-0.0.1-SNAPSHOT.jar app.jar
