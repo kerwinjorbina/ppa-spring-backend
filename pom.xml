@@ -119,6 +119,20 @@
 			<groupId>org.springframework.integration</groupId>
 			<artifactId>spring-integration-xml</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>OpenXES</groupId>
+			<artifactId>community</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/OpenXES.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>OpenXES-XStream</groupId>
+			<artifactId>community</artifactId>
+			<version>1.0</version>
+			<scope>system</scope>
+			<systemPath>${project.basedir}/lib/OpenXES-XStream.jar</systemPath>
+		</dependency>
 	</dependencies>
 
 	<build>
