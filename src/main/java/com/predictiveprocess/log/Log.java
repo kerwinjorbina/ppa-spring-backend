@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 /**
@@ -13,17 +14,16 @@ import javax.persistence.Id;
 @Data
 public class Log {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy= GenerationType.AUTO)
     Long id;
     public String name;
     public String path;
-
     public String description;
 
-    public Log(long id, String name, String path) {
-        this.id = id;
+    public Log(String name, String path, String description) {
         this.name = name;
         this.path = path;
+        this.description = description;
     }
 
 }
