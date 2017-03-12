@@ -30,10 +30,10 @@ public class EncodingService {
         XLog log = LogReader.readFile(url.getPath());
 
         switch (type){
-            case FREQUENCY:
-                LoadFrequencyEncoder loadFrequencyEncoder = new LoadFrequencyEncoder(log);
-                instances = loadFrequencyEncoder.getInstances();
-                break;
+//            case FREQUENCY:
+//                LoadFrequencyEncoder loadFrequencyEncoder = new LoadFrequencyEncoder(log);
+//                instances = loadFrequencyEncoder.getInstances();
+//                break;
             case SIMPLE_INDEX:
                 SimpleIndexBasedEncoder simpleIndexBasedEncoder = new SimpleIndexBasedEncoder(log);
                 instances = simpleIndexBasedEncoder.encodeLog(log, this.prefixLength);
@@ -54,10 +54,10 @@ public class EncodingService {
         URL url = getClass().getClassLoader().getResource(filename);
         XLog log = LogReader.readFile(url.getPath());
         switch (type){
-            case FREQUENCY:
-                LoadFrequencyEncoder loadFrequencyEncoder = new LoadFrequencyEncoder(log);
-                instances = loadFrequencyEncoder.getInstances();
-                break;
+//            case FREQUENCY:
+//                LoadFrequencyEncoder loadFrequencyEncoder = new LoadFrequencyEncoder(log);
+//                instances = loadFrequencyEncoder.getInstances();
+//                break;
             case SIMPLE_INDEX:
                 SimpleIndexBasedEncoder simpleIndexBasedEncoder = (SimpleIndexBasedEncoder)this.encoder;
                 instances = simpleIndexBasedEncoder.encodeTestLog(log, this.prefixLength, simpleIndexBasedEncoder.getAttributes());

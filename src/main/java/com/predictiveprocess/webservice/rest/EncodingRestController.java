@@ -1,14 +1,16 @@
 package com.predictiveprocess.webservice.rest;
 
 import com.predictiveprocess.encoder.EncodingType;
+import com.predictiveprocess.encoder.LoadFrequencyEncoder;
+import com.predictiveprocess.log.Log;
 import com.predictiveprocess.log.LogReader;
+import com.predictiveprocess.log.LogRepository;
+import com.predictiveprocess.log.XLogReader;
 import com.predictiveprocess.utility.InstanceSaver;
 import com.predictiveprocess.webservice.service.EncodingService;
 import org.deckfour.xes.model.XLog;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import weka.classifiers.functions.SMOreg;
 import weka.classifiers.trees.RandomForest;
 import weka.core.Instance;
@@ -19,21 +21,21 @@ import weka.filters.unsupervised.attribute.Remove;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 
 /**
  * Created by Kerwin on 1/18/2017.
  */
+@CrossOrigin
 @RestController
 @RequestMapping("/api/encode")
 public class EncodingRestController {
     @Autowired
     EncodingService encodingService;
+    @Autowired
+    LogRepository repo;
 
     @RequestMapping(method = GET, path = "")
     public String encode(@RequestParam String filename, @RequestParam int prefixLength) throws Exception{
@@ -54,4 +56,25 @@ public class EncodingRestController {
         return "";
     }
 
+    @RequestMapping(method = GET, path = "/dailyworkload/{id}")
+    public Map<String, Integer> workload(@PathVariable Long id) throws Exception{
+        Log log = repo.findById(id);
+
+        System.out.println("done reading log");
+
+        Map<String, Integer> map = new TreeMap<String, Integer>(LoadFrequencyEncoder.countActiveTraces(XLogReader.openLog(log.getPath())));
+
+        return map;
+    }
+
+    @RequestMapping(method = GET, path = "/dailyresources/{id}")
+    public Map<String, Integer> resourcesload(@PathVariable Long id) throws Exception{
+        Log log = repo.findById(id);
+
+        System.out.println("done reading log");
+
+        Map<String, Integer> map = new TreeMap<String, Integer>(LoadFrequencyEncoder.countActiveResources(XLogReader.openLog(log.getPath())));
+
+        return map;
+    }
 }

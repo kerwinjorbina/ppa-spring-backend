@@ -9,19 +9,15 @@ import weka.core.DenseInstance;
 import weka.core.Instances;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Kerwin on 1/18/2017.
  */
 public class LoadFrequencyEncoder extends Encoder{
+    public HashMap<String, Integer> workload = null;
 
-    public LoadFrequencyEncoder(XLog log){
-
-        this.instances = countActiveTraces(log);
+    public LoadFrequencyEncoder(){
     }
 
     public static ArrayList<Attribute> generateAttributes(){
@@ -63,7 +59,7 @@ public class LoadFrequencyEncoder extends Encoder{
         return data;
     }
 
-    public static Instances countActiveTraces(XLog log){
+    public static HashMap<String, Integer> countActiveTraces(XLog log){
         Instances instances = null;
         try {
             HashMap<String, Integer> workLoad = new HashMap<String, Integer>();
@@ -83,14 +79,50 @@ public class LoadFrequencyEncoder extends Encoder{
                     }
                 }
             }
-            instances = getDailyWorkLoad(workLoad);
-
+            return workLoad;
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
+            return null;
         }
+    }
 
-        return instances;
+    public static HashMap<String, Integer> countActiveResources(XLog log){
+        Instances instances = null;
+        try {
+            HashMap<String, List<String>> workLoad = new HashMap<String, List<String>>();
+            for (XTrace trace : log) {
+                List<String> activeDates = new ArrayList<String>();
+
+                for (XEvent event : trace) {
+                    String date = new SimpleDateFormat("yyyy-MM-dd").format(XTimeExtension.instance().extractTimestamp(event));
+                    String resourceName = event.getAttributes().get("org:resource").toString();
+
+                    if(workLoad.containsKey(date)){
+                        List<String> res = workLoad.get(date);
+                        if(!res.contains(resourceName)){
+                            res.add(resourceName);
+                            workLoad.put(date, res);
+                        }
+                    }
+                    else{
+                        List<String> res = new ArrayList<>();
+                        res.add(resourceName);
+                        workLoad.put(date, res);
+                    }
+                }
+            }
+
+            HashMap<String, Integer> resourcesPerDay = new HashMap<>();
+            for(String date : workLoad.keySet()) {
+                resourcesPerDay.put(date, workLoad.get(date).size());
+            }
+            return resourcesPerDay;
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //to be used as exogenous variable

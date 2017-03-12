@@ -1,10 +1,7 @@
 package com.predictiveprocess.log;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +14,7 @@ import java.io.Serializable;
  */
 @Entity
 @Data
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @AllArgsConstructor(staticName = "of")
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

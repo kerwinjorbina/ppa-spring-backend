@@ -12,4 +12,5 @@ import java.util.List;
 public interface LogRepository extends JpaRepository<Log, Long> {
     Log getOne(Long id);
     List<Log> findAll();
+    Log findById(Long id);
 }
