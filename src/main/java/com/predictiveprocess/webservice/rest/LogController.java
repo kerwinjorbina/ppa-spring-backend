@@ -49,7 +49,7 @@ public class LogController {
             Set set = multipartRequest.getFileMap().entrySet();
             String name = req.getParameter("name");
             String description = req.getParameter("description");
-            String directory = "./upload";
+            String directory = ".";
 
             Iterator i = set.iterator();
             while(i.hasNext()) {

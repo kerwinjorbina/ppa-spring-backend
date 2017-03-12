@@ -3,25 +3,16 @@ package com.predictiveprocess.webservice.rest;
 import com.predictiveprocess.encoder.EncodingType;
 import com.predictiveprocess.encoder.LoadFrequencyEncoder;
 import com.predictiveprocess.log.Log;
-import com.predictiveprocess.log.LogReader;
 import com.predictiveprocess.log.LogRepository;
 import com.predictiveprocess.log.XLogReader;
 import com.predictiveprocess.utility.InstanceSaver;
 import com.predictiveprocess.webservice.service.EncodingService;
-import org.deckfour.xes.model.XLog;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import weka.classifiers.functions.SMOreg;
-import weka.classifiers.trees.RandomForest;
-import weka.core.Instance;
 import weka.core.Instances;
-import weka.core.converters.CSVSaver;
-import weka.filters.Filter;
-import weka.filters.unsupervised.attribute.Remove;
 
-import java.io.File;
-import java.net.URL;
-import java.util.*;
+import java.util.Map;
+import java.util.TreeMap;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
 

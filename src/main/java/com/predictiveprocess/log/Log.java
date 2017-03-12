@@ -32,4 +32,21 @@ public class Log implements Serializable{
         this.description = description;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+
 }
