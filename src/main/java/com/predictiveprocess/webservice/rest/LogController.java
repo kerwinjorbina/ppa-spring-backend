@@ -1,16 +1,16 @@
 package com.predictiveprocess.webservice.rest;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectWriter;
+import com.google.gson.Gson;
 import com.predictiveprocess.log.Log;
 import com.predictiveprocess.log.LogRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.support.StandardMultipartHttpServletRequest;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -21,11 +21,11 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static org.springframework.web.bind.annotation.RequestMethod.GET;
-import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
 /**
  * Created by kerwin on 3/11/17.
@@ -75,5 +75,36 @@ public class LogController {
         }
 
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    @RequestMapping(method = GET, path = "")
+    public List<Log> getAll() throws Exception{
+        System.out.println("getting all logs");
+
+        try{
+            System.out.println("getting specific log");
+            return repo.findAll();
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
+    @RequestMapping(method = GET, path = "/{id}")
+    public String getOne(@PathVariable Long id) throws Exception{
+        Log log = null;
+        try{
+            System.out.println("getting specific log");
+            log = repo.getOne(id);
+        } catch(Exception e){
+            e.printStackTrace();
+        }
+
+        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
+        String json = ow.writeValueAsString(log);
+
+        Gson gson = new Gson();
+        return gson.toJson(log);
     }
 }
