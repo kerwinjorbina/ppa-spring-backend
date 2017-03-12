@@ -77,4 +77,15 @@ public class EncodingRestController {
 
         return map;
     }
+
+    @RequestMapping(method = GET, path = "/eventexecutions/{id}")
+    public Map<String, Integer> eventExecutions(@PathVariable Long id) throws Exception{
+        Log log = repo.findById(id);
+
+        System.out.println("done reading log");
+
+//        Map<String, Integer> map = new TreeMap<String, Integer>();
+
+        return LoadFrequencyEncoder.getEventExecutions(XLogReader.openLog(log.getPath()));
+    }
 }

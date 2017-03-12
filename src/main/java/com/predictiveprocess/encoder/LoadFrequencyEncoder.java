@@ -1,5 +1,6 @@
 package com.predictiveprocess.encoder;
 
+import com.predictiveprocess.log.LogReader;
 import org.deckfour.xes.extension.std.XTimeExtension;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
@@ -10,6 +11,7 @@ import weka.core.Instances;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Created by Kerwin on 1/18/2017.
@@ -119,10 +121,31 @@ public class LoadFrequencyEncoder extends Encoder{
             }
             return resourcesPerDay;
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
             return null;
         }
+    }
+
+    //to be used as exogenous variable
+    public static Map<String, Integer> getEventExecutions(XLog log){
+        HashMap<String, Integer> eventExecutions = new HashMap<>();
+
+        List<String> events = LogReader.getAllEventNames(log);
+        for(String event : events){
+            eventExecutions.put(event, 0);
+        }
+
+        try {
+            for (XTrace trace : log) {
+                for (XEvent event : trace) {
+                    String eventName = event.getAttributes().get("concept:name").toString();
+                    eventExecutions.put(eventName, eventExecutions.get(eventName)+1);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return sortByValue(eventExecutions);
     }
 
     //to be used as exogenous variable
@@ -150,6 +173,18 @@ public class LoadFrequencyEncoder extends Encoder{
             e.printStackTrace();
         }
         return exog;
+    }
+
+    public static <K, V extends Comparable<? super V>> Map<K, V> sortByValue(Map<K, V> map) {
+        return map.entrySet()
+                .stream()
+                .sorted(Map.Entry.comparingByValue(Collections.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 
 }
