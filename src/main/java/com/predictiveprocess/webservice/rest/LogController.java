@@ -78,11 +78,10 @@ public class LogController {
     }
 
     @RequestMapping(method = GET, path = "")
-    public List<Log> getAll() throws Exception{
+    public @ResponseBody List<Log> getAll() throws Exception{
         System.out.println("getting all logs");
 
         try{
-            System.out.println("getting specific log");
             return repo.findAll();
         } catch(Exception e){
             e.printStackTrace();
@@ -92,7 +91,7 @@ public class LogController {
     }
 
     @RequestMapping(method = GET, path = "/{id}")
-    public String getOne(@PathVariable Long id) throws Exception{
+    public Log getOne(@PathVariable Long id) throws Exception{
         Log log = null;
         try{
             System.out.println("getting specific log");
@@ -101,10 +100,6 @@ public class LogController {
             e.printStackTrace();
         }
 
-        ObjectWriter ow = new ObjectMapper().writer().withDefaultPrettyPrinter();
-        String json = ow.writeValueAsString(log);
-
-        Gson gson = new Gson();
-        return gson.toJson(log);
+        return log;
     }
 }

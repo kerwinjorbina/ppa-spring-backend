@@ -1,7 +1,10 @@
 package com.predictiveprocess.log;
 
-import lombok.*;
-import org.springframework.hateoas.ResourceSupport;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,11 +16,11 @@ import java.io.Serializable;
  * Created by kerwin on 3/11/17.
  */
 @Entity
-@EqualsAndHashCode(callSuper = false)
-@ToString
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 @AllArgsConstructor(staticName = "of")
-public class Log extends org.springframework.hateoas.ResourceSupport {
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+public class Log implements Serializable{
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     Long id;
@@ -30,4 +33,5 @@ public class Log extends org.springframework.hateoas.ResourceSupport {
         this.path = path;
         this.description = description;
     }
+
 }
