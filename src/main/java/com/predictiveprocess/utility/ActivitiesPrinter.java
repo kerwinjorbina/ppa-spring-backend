@@ -56,7 +56,7 @@ public class ActivitiesPrinter {
 					e.printStackTrace();
 				}
 			}
-		}else if(inputLogFileName.toLowerCase().contains("org/deckfour/xes")){
+		}else if(inputLogFileName.toLowerCase().contains("xes")){
 			XesXmlParser parser = new XesXmlParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {

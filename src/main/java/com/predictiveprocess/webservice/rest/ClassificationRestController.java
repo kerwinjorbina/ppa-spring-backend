@@ -135,14 +135,4 @@ public class ClassificationRestController {
 
     }
 
-    public void writeToFile(Instances data, String filename){
-        try{
-            CSVSaver saver = new CSVSaver();
-            saver.setInstances(data);
-            saver.setFile(new File("./"+filename));
-            saver.writeBatch();
-        }catch(Exception e){
-            System.out.println(e.toString());
-        }
-    }
 }

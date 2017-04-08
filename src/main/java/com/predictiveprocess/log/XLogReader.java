@@ -21,7 +21,7 @@ public class XLogReader {
 					e.printStackTrace();
 				}
 			}
-		}else if(inputLogFileName.toLowerCase().contains("mxml") || 
+		}else if(inputLogFileName.toLowerCase().contains("mxml") ||
 				inputLogFileName.toLowerCase().contains("xml")){
 			XMxmlParser parser = new XMxmlParser();
 			if(parser.canParse(new File(inputLogFileName))){
@@ -42,7 +42,7 @@ public class XLogReader {
 					e.printStackTrace();
 				}
 			}
-		}else if(inputLogFileName.toLowerCase().contains("org/deckfour/xes")){
+		}else if(inputLogFileName.toLowerCase().contains("xes")){
 			XesXmlParser parser = new XesXmlParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {

@@ -9,6 +9,8 @@ import org.deckfour.xes.model.XLog;
 import org.springframework.stereotype.Service;
 import weka.core.Instances;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -25,8 +27,6 @@ public class EncodingService {
         this.prefixLength = prefixLength;
 
         Instances instances = null;
-//        URL url = getClass().getClassLoader().getResource(filename);
-//        XLog log = LogReader.readFile(url.getPath());
         XLog log = LogReader.readFile(filename);
 
         switch (type){

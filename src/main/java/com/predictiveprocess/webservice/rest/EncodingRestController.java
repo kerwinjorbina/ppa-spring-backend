@@ -3,9 +3,9 @@ package com.predictiveprocess.webservice.rest;
 import com.predictiveprocess.encoder.EncodingType;
 import com.predictiveprocess.encoder.LoadFrequencyEncoder;
 import com.predictiveprocess.log.Log;
+import com.predictiveprocess.log.LogReader;
 import com.predictiveprocess.log.LogRepository;
 import com.predictiveprocess.log.XLogReader;
-import com.predictiveprocess.utility.InstanceSaver;
 import com.predictiveprocess.webservice.service.EncodingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -34,7 +34,7 @@ public class EncodingRestController {
         System.out.println("filename = "+ filename);
         Instances instances = encodingService.encodeLog(EncodingType.SIMPLE, filename, prefixLength);
 
-        InstanceSaver.saveInstancesToArff(instances, "arff/file.arff");
+        LogReader.writeToFile(instances, filename+".csv");
         System.out.println("done loading this page.");
         return instances.toString();
     }
@@ -43,7 +43,7 @@ public class EncodingRestController {
     public String simpleIndexEncode() throws Exception{
         Instances instances = encodingService.encodeLog(EncodingType.SIMPLE_INDEX, "./activitylog_uci_detailed_labour.org.deckfour.xes", 0);
         System.out.println("in this path /api/encode/simple");
-//        InstanceSaver.saveInstancesToArff(instances, "arff/file.arff");
+
         System.out.println("done loading this page.");
         return "";
     }

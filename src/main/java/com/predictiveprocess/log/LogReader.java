@@ -3,7 +3,10 @@ package com.predictiveprocess.log;
 import org.deckfour.xes.model.XEvent;
 import org.deckfour.xes.model.XLog;
 import org.deckfour.xes.model.XTrace;
+import weka.core.Instances;
+import weka.core.converters.CSVSaver;
 
+import java.io.File;
 import java.util.ArrayList;
 
 /**
@@ -35,5 +38,17 @@ public class LogReader {
             }
         }
         return events;
+    }
+
+
+    public static void writeToFile(Instances data, String filename){
+        try{
+            CSVSaver saver = new CSVSaver();
+            saver.setInstances(data);
+            saver.setFile(new File("./"+filename));
+            saver.writeBatch();
+        }catch(Exception e){
+            System.out.println(e.toString());
+        }
     }
 }
