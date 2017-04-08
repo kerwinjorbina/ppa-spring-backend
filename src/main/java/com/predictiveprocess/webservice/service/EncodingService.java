@@ -2,7 +2,6 @@ package com.predictiveprocess.webservice.service;
 
 import com.predictiveprocess.encoder.Encoder;
 import com.predictiveprocess.encoder.EncodingType;
-
 import com.predictiveprocess.encoder.LoadFrequencyEncoder;
 import com.predictiveprocess.encoder.SimpleIndexBasedEncoder;
 import com.predictiveprocess.log.LogReader;
@@ -26,8 +25,9 @@ public class EncodingService {
         this.prefixLength = prefixLength;
 
         Instances instances = null;
-        URL url = getClass().getClassLoader().getResource(filename);
-        XLog log = LogReader.readFile(url.getPath());
+//        URL url = getClass().getClassLoader().getResource(filename);
+//        XLog log = LogReader.readFile(url.getPath());
+        XLog log = LogReader.readFile(filename);
 
         switch (type){
 //            case FREQUENCY:

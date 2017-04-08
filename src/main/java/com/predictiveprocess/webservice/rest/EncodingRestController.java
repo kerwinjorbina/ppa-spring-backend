@@ -31,6 +31,7 @@ public class EncodingRestController {
     @RequestMapping(method = GET, path = "")
     public String encode(@RequestParam String filename, @RequestParam int prefixLength) throws Exception{
         System.out.println ("encode file simple");
+        System.out.println("filename = "+ filename);
         Instances instances = encodingService.encodeLog(EncodingType.SIMPLE, filename, prefixLength);
 
         InstanceSaver.saveInstancesToArff(instances, "arff/file.arff");
@@ -40,7 +41,7 @@ public class EncodingRestController {
 
     @RequestMapping(method = GET, path = "/simple")
     public String simpleIndexEncode() throws Exception{
-        Instances instances = encodingService.encodeLog(EncodingType.SIMPLE_INDEX, "./logs/dailyactivities/activitylog_uci_detailed_labour.xes", 0);
+        Instances instances = encodingService.encodeLog(EncodingType.SIMPLE_INDEX, "./activitylog_uci_detailed_labour.org.deckfour.xes", 0);
         System.out.println("in this path /api/encode/simple");
 //        InstanceSaver.saveInstancesToArff(instances, "arff/file.arff");
         System.out.println("done loading this page.");

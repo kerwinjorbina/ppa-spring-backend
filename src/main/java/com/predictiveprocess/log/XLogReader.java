@@ -33,7 +33,7 @@ public class XLogReader {
 			}
 		}
 
-		if(inputLogFileName.toLowerCase().contains("xes.gz")){
+		if(inputLogFileName.toLowerCase().contains("org.deckfour.xes.gz")){
 			XesXmlGZIPParser parser = new XesXmlGZIPParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {
@@ -42,7 +42,7 @@ public class XLogReader {
 					e.printStackTrace();
 				}
 			}
-		}else if(inputLogFileName.toLowerCase().contains("xes")){
+		}else if(inputLogFileName.toLowerCase().contains("org/deckfour/xes")){
 			XesXmlParser parser = new XesXmlParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {

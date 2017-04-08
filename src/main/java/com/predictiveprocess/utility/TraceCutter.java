@@ -16,15 +16,15 @@ import java.io.IOException;
 public class TraceCutter {
 	
 	public static void main(String[] args) {
-		String outputFilePath = "./input/BPI2011_80.xes";
-//		String inputFilePath = "./input/BPI2011_80.xes";
-		String inputFilePath = "./src/main/resources/logs/bpi2011/bpi2013_all.xes";
+		String outputFilePath = "./input/BPI2011_80.org.deckfour.xes";
+//		String inputFilePath = "./input/BPI2011_80.org.deckfour.xes";
+		String inputFilePath = "./src/main/resources/logs/bpi2011/bpi2013_all.org.deckfour.xes";
 		
 		XLog log;
 		try {
 			log = XLogReader.openLog(inputFilePath);
 
-			splitLog(log, 0.80, "bpi2013_80.xes", "bpi2013_20.xes");
+			splitLog(log, 0.80, "bpi2013_80.org.deckfour.xes", "bpi2013_20.org.deckfour.xes");
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

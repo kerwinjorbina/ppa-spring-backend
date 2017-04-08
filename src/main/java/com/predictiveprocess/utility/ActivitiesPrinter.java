@@ -21,7 +21,7 @@ public class ActivitiesPrinter {
 	 * @throws FileNotFoundException 
 	 */
 	public static void main(String[] args) throws FileNotFoundException {
-		String inputLogFileName = "C:\\Users\\Fabrizio\\Desktop\\originalWithoutGroupString.xes";
+		String inputLogFileName = "C:\\Users\\Fabrizio\\Desktop\\originalWithoutGroupString.org.deckfour.xes";
 		String outputLogFileName = "C:\\Users\\Fabrizio\\Desktop\\output.txt";
 		XLog log = null;
 
@@ -47,7 +47,7 @@ public class ActivitiesPrinter {
 			}
 		}
 
-		if(inputLogFileName.toLowerCase().contains("xes.gz")){
+		if(inputLogFileName.toLowerCase().contains("org.deckfour.xes.gz")){
 			XesXmlGZIPParser parser = new XesXmlGZIPParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {
@@ -56,7 +56,7 @@ public class ActivitiesPrinter {
 					e.printStackTrace();
 				}
 			}
-		}else if(inputLogFileName.toLowerCase().contains("xes")){
+		}else if(inputLogFileName.toLowerCase().contains("org/deckfour/xes")){
 			XesXmlParser parser = new XesXmlParser();
 			if(parser.canParse(new File(inputLogFileName))){
 				try {
