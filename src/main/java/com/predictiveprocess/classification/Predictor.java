@@ -1,12 +1,17 @@
 package com.predictiveprocess.classification;
 
+import weka.classifiers.Classifier;
 import weka.classifiers.functions.LinearRegression;
+import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SMOreg;
 import weka.classifiers.functions.supportVector.PolyKernel;
 import weka.classifiers.functions.supportVector.RBFKernel;
 import weka.classifiers.functions.supportVector.RegSMOImproved;
+import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.REPTree;
 import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.RandomTree;
 import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.SelectedTag;
@@ -28,22 +33,12 @@ public class Predictor {
 	 *
 	 */
 
-	public static J48 trainDecisionTree(Instances inst){
-		J48 tree = new J48();
+	public REPTree trainDecisionTree(Instances inst){
+		REPTree tree = new REPTree();
 		 try {
-
 				Instances train = inst;
-
 				train.setClassIndex(train.numAttributes() - 1);
-
-//				String[] options = new String[3];
-//				options[0] = "-p";
-//				options[1] = "-C";
-//				options[2] = "0.25";
-//
-//				tree.setOptions(options);
 				tree.buildClassifier(train);   // build classifier
-
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -56,35 +51,51 @@ public class Predictor {
 			}
 
 		 return tree;
-
 	}
 
-	public static Double makePredictionDecisionTree(J48 tree, Instance instance) throws Exception {
+	public Double makePredictionDecisionTree(REPTree tree, Instance instance) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
 		Double result = null;
 		if(tree!=null){
 			result = tree.classifyInstance(instance);
 		}
-
 		return result;
 	}
 
-	public static RandomForest trainRandomForest(Instances inst){
+	public IBk trainKnn(Instances inst){
+		IBk ibk = new IBk();
+		try {
+			Instances train = inst;
+			train.setClassIndex(train.numAttributes() - 1);
+			ibk.buildClassifier(train);   // build classifier
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ibk;
+	}
+
+	public Double makePredictionKnn(IBk ibk, Instance instance) throws Exception {
+		Map<String, String> results = new HashMap<String, String>();
+		Double result = null;
+		if(ibk!=null){
+			result = ibk.classifyInstance(instance);
+		}
+		return result;
+	}
+
+	public RandomForest trainRandomForest(Instances inst){
 		RandomForest rf = new RandomForest();
 		try {
-
 			Instances train = inst;
-
 			train.setClassIndex(train.numAttributes() - 1);
-
-//				String[] options = new String[3];
-//				options[0] = "-p";
-//				options[1] = "-C";
-//				options[2] = "0.25";
-//
-//				tree.setOptions(options);
 			rf.buildClassifier(train);   // build classifier
-
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -97,10 +108,9 @@ public class Predictor {
 		}
 
 		return rf;
-
 	}
 
-	public static Double makePredictionRandomForest(RandomForest rf, Instance instance) throws Exception {
+	public Double makePredictionRandomForest(RandomForest rf, Instance instance) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
 		Double result = null;
 		if(rf!=null){
@@ -110,7 +120,7 @@ public class Predictor {
 		return result;
 	}
 
-	public static LinearRegression trainRegression(Instances inst){
+	public LinearRegression trainRegression(Instances inst){
 		LinearRegression linearRegression = new LinearRegression();
 		try {
 
@@ -127,7 +137,7 @@ public class Predictor {
 
 	}
 
-	public static Double makePredictionRegression(LinearRegression linearRegression, Instance instance) throws Exception {
+	public Double makePredictionRegression(LinearRegression linearRegression, Instance instance) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
 		Double result = null;
 		if(linearRegression!=null){
@@ -137,59 +147,26 @@ public class Predictor {
 		return result;
 	}
 
-	public static SMOreg trainSmoRegression(Instances instances, double kernelMainParam, double cParam, double epsilon) {
+	public SMO trainSmoRegression(Instances instances) {
 
-		SMOreg regressor = new SMOreg();
-
-		// DEFAULT
-		RegSMOImproved optimizer = new RegSMOImproved();
-		optimizer.setTolerance(0.001);
-		optimizer.setEpsilon(1.0e-12);
-
-		regressor.setRegOptimizer(optimizer);
-		SelectedTag filterTag = new SelectedTag(SMOreg.FILTER_NORMALIZE, SMOreg.TAGS_FILTER); // Default value FILTER_NORMALIZE
-		regressor.setFilterType(filterTag);
-
-		optimizer.setEpsilonParameter(epsilon);
-
-		int kernelParam = 1; // RBF
-		try {
-			regressor.setC(cParam);
-
-			if (kernelParam == 0) {
-				PolyKernel kernel = new PolyKernel();
-				kernel.setCacheSize(-1);
-				kernel.setExponent(kernelMainParam);
-
-				regressor.setKernel(kernel);
-			} else {
-				RBFKernel kernel = new RBFKernel();
-				kernel.setCacheSize(-1);
-				kernel.setGamma(kernelMainParam);
-
-				regressor.setKernel(kernel);
-			}
-
-		} catch (Exception e1) {
-			e1.printStackTrace();
-		}
+		SMO smo = new SMO();
 
 		instances.setClassIndex(instances.numAttributes() - 1);
 		try {
-			regressor.buildClassifier(instances);
+			smo.buildClassifier(instances);
 		} catch (Exception e){
 			e.printStackTrace();
 			System.out.println("Error in building the classifier");
 		}
 
-		return regressor;
+		return smo;
 	}
 
-	public static Double makePredictionSmoReg(SMOreg smoReg, Instance instance) throws Exception {
+	public Double makePredictionSmoReg(SMO smo, Instance instance) throws Exception {
 		Map<String, String> results = new HashMap<String, String>();
 		Double result = null;
-		if(smoReg!=null){
-			result = smoReg.classifyInstance(instance);
+		if(smo!=null){
+			result = smo.classifyInstance(instance);
 		}
 		return result;
 	}

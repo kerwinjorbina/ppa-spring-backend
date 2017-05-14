@@ -4,9 +4,13 @@ import com.predictiveprocess.classification.Predictor;
 import com.predictiveprocess.classification.enumeration.ClassificationType;
 import org.springframework.stereotype.Service;
 import weka.classifiers.AbstractClassifier;
+import weka.classifiers.functions.SMO;
 import weka.classifiers.functions.SMOreg;
+import weka.classifiers.lazy.IBk;
 import weka.classifiers.trees.J48;
+import weka.classifiers.trees.REPTree;
 import weka.classifiers.trees.RandomForest;
+import weka.classifiers.trees.RandomTree;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -19,15 +23,19 @@ public class ClassificationService {
     public static AbstractClassifier train(ClassificationType type, Instances instances){
 
         AbstractClassifier classifier = null;
+        Predictor predictor = new Predictor();
         switch (type){
             case DECISION_TREE:
-                classifier = Predictor.trainDecisionTree(instances);
+                classifier = predictor.trainDecisionTree(instances);
+                break;
+            case KNN:
+                classifier = predictor.trainKnn(instances);
                 break;
             case RANDOM_FOREST:
-                classifier = Predictor.trainRandomForest(instances);
+                classifier = predictor.trainRandomForest(instances);
                 break;
             case REGRESSION:
-                classifier = Predictor.trainSmoRegression(instances,0.1, 1.0, 0.001);
+                classifier = predictor.trainSmoRegression(instances);
                 break;
             default:
                 break;
@@ -37,15 +45,19 @@ public class ClassificationService {
 
     public static Double predict(ClassificationType type, AbstractClassifier classifier, Instance instance) throws Exception{
         Double result = null;
+        Predictor predictor = new Predictor();
         switch (type){
             case DECISION_TREE:
-                result = Predictor.makePredictionDecisionTree((J48) classifier, instance);
+                result = predictor.makePredictionDecisionTree((REPTree) classifier, instance);
+                break;
+            case KNN:
+                result = predictor.makePredictionKnn((IBk) classifier, instance);
                 break;
             case RANDOM_FOREST:
-                result = Predictor.makePredictionRandomForest((RandomForest) classifier, instance);
+                result = predictor.makePredictionRandomForest((RandomForest) classifier, instance);
                 break;
             case REGRESSION:
-                result = Predictor.makePredictionSmoReg((SMOreg) classifier, instance);
+                result = predictor.makePredictionSmoReg((SMO) classifier, instance);
                 break;
             default:
                 break;
