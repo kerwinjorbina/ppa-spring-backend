@@ -71,9 +71,14 @@ public class ClassificationRestController {
         saver.writeBatch();
     }
 
-    private String sendGet(String file, int index) throws Exception {
-
-        String url = "http://localhost:8000/encoding/read?log="+file+"&index="+index;
+    private String sendGet(String file, int index, String encodingType) throws Exception {
+        String url ="";
+        if(encodingType.compareToIgnoreCase("fastslow") == 0){
+            url = "http://localhost:8000/encoding/fastslowencode?log="+file+"&index="+index;
+        }
+        else{
+            url = "http://localhost:8000/encoding/read?log="+file+"&index="+index;
+        }
 
         URL obj = new URL(url);
         HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -90,7 +95,7 @@ public class ClassificationRestController {
             response.append(inputLine+"\n");
         }
         in.close();
-        String filename = "encodedfiles/"+file+index+".csv";
+        String filename = "encodedfiles/"+file+index+encodingType+".csv";
         FileUtils.writeStringToFile(new File(filename), response.toString());
         return filename;
 
@@ -149,12 +154,12 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/dt")
-    public Results dtClassify(@RequestParam int prefixLength, @RequestParam String encodedFile) throws Exception{
+    public Results dtClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType) throws Exception{
         ;
         //read csv file
         try{
             //split the log
-            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength));
+            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength, encodingType));
             Instances instances = source.getDataSet();
             //split dataset to train and test
             instances = convertToNominal(instances);
@@ -176,10 +181,10 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/knn")
-    public Results knnClassify(@RequestParam int prefixLength, @RequestParam String encodedFile) throws Exception{
+    public Results knnClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType) throws Exception{
 
         try{
-            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength));
+            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength, encodingType));
             Instances instances = source.getDataSet();
             //split dataset to train and test
             instances = convertToNominal(instances);
@@ -200,10 +205,10 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/rf")
-    public Results rfClassify(@RequestParam int prefixLength, @RequestParam String encodedFile) throws Exception{
+    public Results rfClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType) throws Exception{
 
         try{
-            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength));
+            ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength, encodingType));
             Instances instances = source.getDataSet();
             //split dataset to train and test
             instances = convertToNominal(instances);
