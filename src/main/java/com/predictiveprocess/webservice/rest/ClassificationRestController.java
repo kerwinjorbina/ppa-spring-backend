@@ -127,12 +127,14 @@ public class ClassificationRestController {
             for(Instance instance : testInstances){
                 Double val = instance.value(instance.numAttributes()-1);
                 Double res = classificationService.predict(type, classifier, instance);
+                res = (double) (Math.round(res));
                 System.out.println("actual = "+val+ " prediction = "+res);
                 if(val.doubleValue() == res.doubleValue())
                     correctPredictions++;
 
                 predictionResults.instance(i).setValue(predictionResults.numAttributes()-1, res);
                 resultValues.add(predictionResults.instance(i).toDoubleArray());
+                i++;
             }
             saveResults(encodedFile, prefixLength, predictionResults, method);
             String results = "number of correct predictions = "+ correctPredictions;
