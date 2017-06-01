@@ -157,7 +157,7 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/dt")
-    public Results dtClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam int activityA, @RequestParam int activityB) throws Exception{
+    public Results dtClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam(required=false) Integer activityA, @RequestParam(required=false) Integer activityB) throws Exception{
         ;
         //read csv file
         try{
@@ -184,7 +184,7 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/knn")
-    public Results knnClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam int activityA, @RequestParam int activityB) throws Exception{
+    public Results knnClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam(required=false) Integer activityA, @RequestParam(required=false) Integer activityB) throws Exception{
 
         try{
             ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength, encodingType, activityA, activityB));
@@ -208,7 +208,7 @@ public class ClassificationRestController {
     }
 
     @RequestMapping(method = GET, path = "/rf")
-    public Results rfClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam int activityA, @RequestParam int activityB) throws Exception{
+    public Results rfClassify(@RequestParam int prefixLength, @RequestParam String encodedFile, @RequestParam String encodingType, @RequestParam(required=false) Integer activityA, @RequestParam(required=false) Integer activityB) throws Exception{
 
         try{
             ConverterUtils.DataSource source = new ConverterUtils.DataSource(sendGet(encodedFile ,prefixLength, encodingType, activityA, activityB));
